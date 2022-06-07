@@ -1,18 +1,33 @@
 #!/bin/bash
-#These commands identify the host name of the computer.
-echo -n 'Host Name: ' 
-hostname
-#These commands identify the domain name of the computer if there is any.
-echo -n 'Domain Name: '
-domainname
-#This command pulls the operating system info, isolating the name and version of the system.
-echo -n 'OS Version: '
-cat /etc/os-release | grep PRETTY_NAME /etc/os-release 
-#This command pulls the generic IP info of the computer. Then isolated the IPV4 address.
-echo -n 'IP Address ' 
-ip a s ens33 |grep -w inet |awk '{print $2}'
-#This command pulls the storage data of the device, while isolating the Root Filesystem info.
-echo 'Root Filesystem Storage: '
-echo 'Filesystem      Size  Used Avail Mouted on'
-df -h| 
-grep /dev/sda3
+#This script is used to display system info to the user.
+
+#This script assigns the output of the hostname command into a variable which is then displayed.
+Hostname=`hostname`
+
+#This script grabs the data from the Fully-qualified Domain Name output and puts it into a variable and displays it.
+FQDN=`hostname --fqdn`
+
+#This script finds the os name and version of the system. Once found, this command stores it in a variable and dsiplays it.
+Operating_System=`uname -r -o`
+
+#This script finds the IP address of the system shown when the computer is sending or receiving data.
+
+IP_Address=`ip a s ens33 | grep inet -w | awk '{print $2}'`
+
+#This script find the Free space in the Root filesystem and then displays it.
+
+Storage=`df -h | grep /dev/sda3 | awk '{print $4}'`
+
+#Below this text is a output template of what the script output should look like using the cat command.
+
+cat <<EOF
+
+Report for Hostname		: $Hostname
+=================================================
+FQDN 				: $FQDN
+Operating System and Version 	: $Operating_System
+IP Address 			: $IP_Address
+Root Filesystem Free Space 	: $Storage
+=================================================
+
+EOF

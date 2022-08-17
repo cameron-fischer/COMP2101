@@ -1,0 +1,22 @@
+$env:PATH = "$env:PATH;c:/users/camer/OneDrive/documents/github/comp2101/powershell"
+
+new-item -path alias:np -value notepad 
+
+function welcome {
+"Welcome to planet $env:computername Overlord $env:username"
+$now = get-date -format 'HH:MM tt on dddd'
+"It is $now."
+}
+
+function get-cpuinfo {
+
+get-ciminstance cim_processor | format-list
+
+}
+
+function get-mydisks {
+
+get-disk | select Manufacturer,Model,SerialNumber,FirmwareVersion,Size | Format-list
+
+}
+
